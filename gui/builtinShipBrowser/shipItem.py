@@ -19,7 +19,7 @@ pyfalog = Logger(__name__)
 
 class ShipItem(SFItem.SFBrowserItem):
 
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None,
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None, requiresOmega=False,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
         SFItem.SFBrowserItem.__init__(self, parent, size=size)
@@ -31,6 +31,8 @@ class ShipItem(SFItem.SFBrowserItem):
         self.shipRace = itemData
 
         self.shipID = shipID
+
+        self.requiresOmega = requiresOmega
 
         self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.BOLD)
         self.fontNormal = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL)
@@ -273,6 +275,10 @@ class ShipItem(SFItem.SFBrowserItem):
 
         psname = drawUtils.GetPartialText(mdc, shipName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
+
+        if self.requiresOmega:
+            omegaGold = wx.Colour(192, 155, 6)
+            mdc.SetTextForeground(omegaGold)
 
         mdc.DrawText(psname, self.textStartx, self.shipNamey)
 

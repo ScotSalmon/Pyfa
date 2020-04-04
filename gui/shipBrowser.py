@@ -9,6 +9,7 @@ from gui.builtinShipBrowser.fitItem import FitItem
 from gui.builtinShipBrowser.shipItem import ShipItem
 from service.fit import Fit
 from service.market import Market
+from service.character import Character
 
 from gui.builtinShipBrowser.events import EVT_SB_IMPORT_SEL, EVT_SB_STAGE1_SEL, EVT_SB_STAGE2_SEL, EVT_SB_STAGE3_SEL, EVT_SB_SEARCH_SEL
 from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
@@ -39,6 +40,7 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = ""
         self.fitIDMustEditName = -1
         self.filterShipsWithNoFits = False
+        self.filterShipsBySkills = True
         self.recentFits = False
 
         self.racesFilter = {}
@@ -229,19 +231,24 @@ class ShipBrowser(wx.Panel):
         for ship in ships:
             fits = sFit.countFitsWithShip(ship.ID)
             t_fits += fits
-            filter_ = subRacesFilter[ship.race] if ship.race else True
+            raceFilter_ = subRacesFilter[ship.race] if ship.race else True
             if override:
-                filter_ = True
+                raceFilter_ = True
 
             shipTrait = ship.traits.traitText if (ship.traits is not None) else ""  # empty string if no traits
 
-            if self.filterShipsWithNoFits:
-                if fits > 0:
-                    if filter_:
-                        self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID))
-            else:
-                if filter_:
-                    self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID))
+            noFitFilter_ = (not self.filterShipsWithNoFits) or (fits > 0)
+
+            skillsFilter_ = True
+            if self.filterShipsBySkills:
+                for req, level in ship.requiredSkills.items():
+                    for clone in Character.getAlphaCloneList():
+                        if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
+                            skillsFilter_ = False
+
+            filter_ = raceFilter_ and noFitFilter_ #and skillsFilter_
+            if filter_:
+                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID, not skillsFilter_))
 
         self.raceselect.RebuildRaces(racesList)
 
