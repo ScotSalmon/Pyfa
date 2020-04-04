@@ -123,3 +123,7 @@ gitversion
 *.swp
 
 *.fsdbinary
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
