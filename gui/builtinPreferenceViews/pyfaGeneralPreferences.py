@@ -51,6 +51,10 @@ class PFGeneralPref(PreferenceView):
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbFilterBySkills, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.cbColorOmegaOnlyItems = wx.CheckBox(panel, wx.ID_ANY, "Color Omega-only ships and items (experimental)", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
+        mainSizer.Add(self.cbColorOmegaOnlyItems, 0, wx.ALL | wx.EXPAND, 5)
+
         self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, "Color fitting view by slot", wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbFitColorSlots, 0, wx.ALL | wx.EXPAND, 5)
@@ -111,6 +115,7 @@ class PFGeneralPref(PreferenceView):
         self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
         self.rbAddLabels.SetSelection(self.sFit.serviceFittingOptions["additionsLabels"])
         self.cbFilterBySkills.SetValue(self.sFit.serviceFittingOptions["filterBySkills"] or False)
+        self.cbColorOmegaOnlyItems.SetValue(self.sFit.serviceFittingOptions["colorOmegaOnlyItems"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
@@ -126,6 +131,7 @@ class PFGeneralPref(PreferenceView):
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
         self.cbReloadAll.Bind(wx.EVT_CHECKBOX, self.onCBReloadAll)
         self.cbFilterBySkills.Bind(wx.EVT_CHECKBOX, self.onCBFilterBySkills)
+        self.cbColorOmegaOnlyItems.Bind(wx.EVT_CHECKBOX, self.onCBColorOmegaOnlyItems)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -200,6 +206,10 @@ class PFGeneralPref(PreferenceView):
 
     def onCBFilterBySkills(self, event):
         self.sFit.serviceFittingOptions["filterBySkills"] = self.cbFilterBySkills.GetValue()
+        # TODO: refresh browsers here
+
+    def onCBColorOmegaOnlyItems(self, event):
+        self.sFit.serviceFittingOptions["colorOmegaOnlyItems"] = self.cbColorOmegaOnlyItems.GetValue()
         # TODO: maybe refresh browsers here
 
     def OnAddLabelsChange(self, event):

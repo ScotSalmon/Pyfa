@@ -387,6 +387,7 @@ class Fit:
         fit.character = self.character = eos.db.getCharacter(charID)
         self.recalc(fit)
         self.fill(fit)
+        # TODO: refresh market browser if filtering by skills
 
     @staticmethod
     def getTargetProfile(fitID):

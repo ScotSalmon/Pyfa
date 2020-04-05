@@ -12,6 +12,7 @@ from gui.bitmap_loader import BitmapLoader
 from gui.contextMenu import ContextMenu
 from service.fit import Fit
 from service.market import Market
+from service.settings import SettingsProvider
 from .events import FitSelected, Stage3Selected
 
 pyfalog = Logger(__name__)
@@ -19,7 +20,7 @@ pyfalog = Logger(__name__)
 
 class ShipItem(SFItem.SFBrowserItem):
 
-    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None, requiresOmega=False,
+    def __init__(self, parent, shipID=None, shipFittingInfo=("Test", "TestTrait", 2), itemData=None, graphicID=None, applyOmegaColor=False,
                  id=wx.ID_ANY, pos=wx.DefaultPosition,
                  size=(0, 40), style=0):
         SFItem.SFBrowserItem.__init__(self, parent, size=size)
@@ -32,7 +33,7 @@ class ShipItem(SFItem.SFBrowserItem):
 
         self.shipID = shipID
 
-        self.requiresOmega = requiresOmega
+        self.applyOmegaColor = applyOmegaColor
 
         self.fontBig = wx.Font(fonts.BIG, wx.SWISS, wx.NORMAL, wx.BOLD)
         self.fontNormal = wx.Font(fonts.NORMAL, wx.SWISS, wx.NORMAL, wx.NORMAL)
@@ -276,7 +277,7 @@ class ShipItem(SFItem.SFBrowserItem):
         psname = drawUtils.GetPartialText(mdc, shipName,
                                           self.toolbarx - self.textStartx - self.padding * 2 - self.thoverw)
 
-        if self.requiresOmega:
+        if self.applyOmegaColor:
             omegaGold = wx.Colour(192, 155, 6)
             mdc.SetTextForeground(omegaGold)
 

@@ -28,9 +28,10 @@ class ItemView(Display):
         pyfalog.debug("Initialize ItemView")
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.treeSelectionChanged)
 
-        # TODO: guessing that the fact I only use one setting here might mean I misunderstand the design of the settings provider...
+        # TODO: guessing that the fact I only use two settings here might mean I misunderstand the design of the settings provider...
         serviceFittingDefaultOptions = {
             "filterBySkills": False,
+            "colorOmegaOnlyItems": True,
         }
         self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
             "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
@@ -165,8 +166,15 @@ class ItemView(Display):
         return filteredItems
 
     def filterItemsBySkills(self, items):
-        filtered = [item for item in items if self.alphaCloneCanUse(item)]
+        filtered = [item for item in items if self.characterCanUse(item)]
         return filtered
+
+    def characterCanUse(self, item):
+        for req, level in item.requiredSkills.items():
+            character = self.sFit.character
+            if level > character.getSkill(req).level:
+                return False
+        return True
 
     def alphaCloneCanUse(self, item):
         for req, level in item.requiredSkills.items():
@@ -280,11 +288,11 @@ class ItemView(Display):
         Display.refresh(self, items)
 
     def itemTextColour(self, colItem, item):
-        if self.serviceFittingOptions["filterBySkills"] or self.alphaCloneCanUse(item):
-            return self.GetTextColour()
-        else:
-            omegaGold = wx.Colour(192, 155, 6)
+        if self.serviceFittingOptions["colorOmegaOnlyItems"] and not self.alphaCloneCanUse(item):
+            omegaGold = wx.Colour(192, 155, 6) # TODO: single source this with the ship equivalent
             return omegaGold
+        else:
+            return self.GetTextColour()
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:

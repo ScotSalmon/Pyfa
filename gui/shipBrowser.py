@@ -10,6 +10,7 @@ from gui.builtinShipBrowser.shipItem import ShipItem
 from service.fit import Fit
 from service.market import Market
 from service.character import Character
+from service.settings import SettingsProvider
 
 from gui.builtinShipBrowser.events import EVT_SB_IMPORT_SEL, EVT_SB_STAGE1_SEL, EVT_SB_STAGE2_SEL, EVT_SB_STAGE3_SEL, EVT_SB_SEARCH_SEL
 from gui.builtinShipBrowser.pfWidgetContainer import PFWidgetsContainer
@@ -23,6 +24,12 @@ pyfalog = Logger(__name__)
 class ShipBrowser(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, style=0)
+
+        serviceFittingDefaultOptions = {
+            "colorOmegaOnlyItems": True,
+        }
+        self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
 
         self._lastWidth = 0
         self._activeStage = 1
@@ -239,16 +246,21 @@ class ShipBrowser(wx.Panel):
 
             noFitFilter_ = (not self.filterShipsWithNoFits) or (fits > 0)
 
-            hasRequiredSkills = True
-            for req, level in ship.requiredSkills.items():
+            # TODO: I'm keeping the filter toggle around for now to play with, but it should probably be somehow
+            #       combined with the item skill filter preference, maybe in combination with "use global character"
+            if self.serviceFittingOptions["colorOmegaOnlyItems"] or self.filterShipsBySkills:
+                hasRequiredSkills = True
                 for clone in Character.getAlphaCloneList():
-                    if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
-                        hasRequiredSkills = False
+                    for req, level in ship.requiredSkills.items():
+                        if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
+                            hasRequiredSkills = False
+                            break
             skillsFilter_ = (not self.filterShipsBySkills) or hasRequiredSkills
+            applyOmegaColor = self.serviceFittingOptions["colorOmegaOnlyItems"] and not hasRequiredSkills
 
             filter_ = raceFilter_ and noFitFilter_ and skillsFilter_
             if filter_:
-                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID, not hasRequiredSkills))
+                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID, applyOmegaColor))
 
         self.raceselect.RebuildRaces(racesList)
 
