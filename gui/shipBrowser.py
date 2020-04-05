@@ -40,7 +40,7 @@ class ShipBrowser(wx.Panel):
         self._stage3ShipName = ""
         self.fitIDMustEditName = -1
         self.filterShipsWithNoFits = False
-        self.filterShipsBySkills = True
+        self.filterShipsBySkills = False
         self.recentFits = False
 
         self.racesFilter = {}
@@ -239,16 +239,16 @@ class ShipBrowser(wx.Panel):
 
             noFitFilter_ = (not self.filterShipsWithNoFits) or (fits > 0)
 
-            skillsFilter_ = True
-            if self.filterShipsBySkills:
-                for req, level in ship.requiredSkills.items():
-                    for clone in Character.getAlphaCloneList():
-                        if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
-                            skillsFilter_ = False
+            hasRequiredSkills = True
+            for req, level in ship.requiredSkills.items():
+                for clone in Character.getAlphaCloneList():
+                    if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
+                        hasRequiredSkills = False
+            skillsFilter_ = (not self.filterShipsBySkills) or hasRequiredSkills
 
-            filter_ = raceFilter_ and noFitFilter_ #and skillsFilter_
+            filter_ = raceFilter_ and noFitFilter_ and skillsFilter_
             if filter_:
-                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID, not skillsFilter_))
+                self.lpane.AddWidget(ShipItem(self.lpane, ship.ID, (ship.name, shipTrait, fits), ship.race, ship.graphicID, not hasRequiredSkills))
 
         self.raceselect.RebuildRaces(racesList)
 

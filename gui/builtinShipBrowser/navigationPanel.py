@@ -38,6 +38,9 @@ class NavigationPanel(SFItem.SFBrowserItem):
         recentImg = recentImg.AdjustChannels(1, 1, 1, 0.4)
         self.recentBmpD = wx.Bitmap(recentImg)
 
+        self.skillRedBmp = BitmapLoader.getBitmap("skill_small_red", "gui")
+        self.skillBmp = BitmapLoader.getBitmap("skill_small", "gui")
+
         self.resetBmp = self.AdjustChannels(self.resetBmpH)
         self.rewBmp = self.AdjustChannels(self.rewBmpH)
         self.searchBmp = self.AdjustChannels(self.searchBmpH)
@@ -56,6 +59,7 @@ class NavigationPanel(SFItem.SFBrowserItem):
         self.btnRecent = self.toolbar.AddButton(self.recentBmpD, "Recent Fits",
                                                 clickCallback=self.ToggleRecentShips, hoverBitmap=self.recentBmpH,
                                                 show=True)
+        self.btnSkillFilter = self.toolbar.AddButton(self.skillBmp, "Filter by skills", self.ToggleSkillsFilter)
 
         modifier = "CTRL" if 'wxMac' not in wx.PlatformInfo else "CMD"
         self.toolbar.AddButton(self.searchBmp, "Search fittings ({}+F)".format(modifier), clickCallback=self.ToggleSearchBox,
@@ -150,7 +154,18 @@ class NavigationPanel(SFItem.SFBrowserItem):
             self.shipBrowser.filterShipsWithNoFits = True
             self.btnSwitch.label = "Show empty ship groups"
             self.btnSwitch.normalBmp = self.switchBmp
+        self.ReloadShipList()
 
+    def ToggleSkillsFilter(self):
+        if self.shipBrowser.filterShipsBySkills:
+            self.shipBrowser.filterShipsBySkills = False
+            self.btnSkillFilter.normalBmp = self.skillBmp
+        else:
+            self.shipBrowser.filterShipsBySkills = True
+            self.btnSkillFilter.normalBmp = self.skillRedBmp
+        self.ReloadShipList()
+
+    def ReloadShipList(self):
         stage = self.shipBrowser.GetActiveStage()
 
         if stage == 1:

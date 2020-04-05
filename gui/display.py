@@ -221,12 +221,14 @@ class Display(wx.ListCtrl):
                     col.delayedText(st, self, colItem)
                     newText = "\u21bb"
                 newColour = self.columnBackground(colItem, st)
+                newTextColour = self.itemTextColour(colItem, st)
 
                 newImageId = col.getImageId(st)
 
                 colItem.SetText(newText)
                 colItem.SetImage(newImageId)
                 colItem.SetBackgroundColour(newColour)
+                colItem.SetTextColour(newTextColour)
 
                 mask = 0
 
@@ -265,6 +267,9 @@ class Display(wx.ListCtrl):
     def getColumn(self, point):
         row, _, col = self.HitTestSubItem(point)
         return col
+
+    def itemTextColour(self, colItem, item):
+        return colItem.GetTextColour()
 
     def columnBackground(self, colItem, item):
         return colItem.GetBackgroundColour()

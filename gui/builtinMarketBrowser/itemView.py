@@ -9,6 +9,7 @@ from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
 from service.attribute import Attribute
 from service.fit import Fit
+from service.character import Character
 from config import slotColourMap
 
 pyfalog = Logger(__name__)
@@ -26,6 +27,7 @@ class ItemView(Display):
         pyfalog.debug("Initialize ItemView")
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.treeSelectionChanged)
 
+        self.filterItemsBySkills = True
         self.unfilteredStore = set()
         self.filteredStore = set()
         self.sMkt = marketBrowser.sMkt
@@ -256,6 +258,15 @@ class ItemView(Display):
             item.marketShortcut = i + 1
 
         Display.refresh(self, items)
+
+    def itemTextColour(self, colItem, item):
+        if self.filterItemsBySkills:
+            for req, level in item.requiredSkills.items():
+                for clone in Character.getAlphaCloneList():
+                    if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
+                        omegaGold = wx.Colour(192, 155, 6)
+                        return omegaGold
+        return self.GetTextColour()
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:
