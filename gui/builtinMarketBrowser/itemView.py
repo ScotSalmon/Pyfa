@@ -10,6 +10,7 @@ from gui.utils.staticHelpers import DragDropHelper
 from service.attribute import Attribute
 from service.fit import Fit
 from service.character import Character
+from service.settings import SettingsProvider
 from config import slotColourMap
 
 pyfalog = Logger(__name__)
@@ -27,7 +28,13 @@ class ItemView(Display):
         pyfalog.debug("Initialize ItemView")
         marketBrowser.Bind(wx.EVT_TREE_SEL_CHANGED, self.treeSelectionChanged)
 
-        self.filterItemsBySkills = True
+        # TODO: guessing that the fact I only use one setting here might mean I misunderstand the design of the settings provider...
+        serviceFittingDefaultOptions = {
+            "filterBySkills": False,
+        }
+        self.serviceFittingOptions = SettingsProvider.getInstance().getSettings(
+            "pyfaServiceFittingOptions", serviceFittingDefaultOptions)
+
         self.unfilteredStore = set()
         self.filteredStore = set()
         self.sMkt = marketBrowser.sMkt
@@ -153,7 +160,20 @@ class ItemView(Display):
             if btn.userSelected:
                 selectedMetas.update(sMkt.META_MAP[btn.metaName])
         filteredItems = sMkt.filterItemsByMeta(self.unfilteredStore, selectedMetas)
+        if self.serviceFittingOptions["filterBySkills"]:
+            filteredItems = self.filterItemsBySkills(filteredItems)
         return filteredItems
+
+    def filterItemsBySkills(self, items):
+        filtered = [item for item in items if self.alphaCloneCanUse(item)]
+        return filtered
+
+    def alphaCloneCanUse(self, item):
+        for req, level in item.requiredSkills.items():
+            for clone in Character.getAlphaCloneList():
+                if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
+                    return False
+        return True
 
     def setToggles(self):
         metaIDs = set()
@@ -260,13 +280,11 @@ class ItemView(Display):
         Display.refresh(self, items)
 
     def itemTextColour(self, colItem, item):
-        if self.filterItemsBySkills:
-            for req, level in item.requiredSkills.items():
-                for clone in Character.getAlphaCloneList():
-                    if (req.ID in clone.skillCache) and (level > clone.skillCache[req.ID].level):
-                        omegaGold = wx.Colour(192, 155, 6)
-                        return omegaGold
-        return self.GetTextColour()
+        if self.serviceFittingOptions["filterBySkills"] or self.alphaCloneCanUse(item):
+            return self.GetTextColour()
+        else:
+            omegaGold = wx.Colour(192, 155, 6)
+            return omegaGold
 
     def columnBackground(self, colItem, item):
         if self.sFit.serviceFittingOptions["colorFitBySlot"]:

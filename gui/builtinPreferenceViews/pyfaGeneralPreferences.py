@@ -47,6 +47,10 @@ class PFGeneralPref(PreferenceView):
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbCompactSkills, 0, wx.ALL | wx.EXPAND, 5)
 
+        self.cbFilterBySkills = wx.CheckBox(panel, wx.ID_ANY, "Filter by skills (experimental)", wx.DefaultPosition,
+                                           wx.DefaultSize, 0)
+        mainSizer.Add(self.cbFilterBySkills, 0, wx.ALL | wx.EXPAND, 5)
+
         self.cbFitColorSlots = wx.CheckBox(panel, wx.ID_ANY, "Color fitting view by slot", wx.DefaultPosition,
                                            wx.DefaultSize, 0)
         mainSizer.Add(self.cbFitColorSlots, 0, wx.ALL | wx.EXPAND, 5)
@@ -106,6 +110,7 @@ class PFGeneralPref(PreferenceView):
         self.cbShowShipBrowserTooltip.SetValue(self.sFit.serviceFittingOptions["showShipBrowserTooltip"])
         self.cbReloadAll.SetValue(self.sFit.serviceFittingOptions["ammoChangeAll"])
         self.rbAddLabels.SetSelection(self.sFit.serviceFittingOptions["additionsLabels"])
+        self.cbFilterBySkills.SetValue(self.sFit.serviceFittingOptions["filterBySkills"] or False)
 
         self.cbGlobalChar.Bind(wx.EVT_CHECKBOX, self.OnCBGlobalCharStateChange)
         self.cbDefaultCharImplants.Bind(wx.EVT_CHECKBOX, self.OnCBDefaultCharImplantsStateChange)
@@ -120,6 +125,7 @@ class PFGeneralPref(PreferenceView):
         self.cbOpenFitInNew.Bind(wx.EVT_CHECKBOX, self.onCBOpenFitInNew)
         self.cbShowShipBrowserTooltip.Bind(wx.EVT_CHECKBOX, self.onCBShowShipBrowserTooltip)
         self.cbReloadAll.Bind(wx.EVT_CHECKBOX, self.onCBReloadAll)
+        self.cbFilterBySkills.Bind(wx.EVT_CHECKBOX, self.onCBFilterBySkills)
 
         self.cbRackLabels.Enable(self.sFit.serviceFittingOptions["rackSlots"] or False)
 
@@ -191,6 +197,10 @@ class PFGeneralPref(PreferenceView):
 
     def onCBReloadAll(self, event):
         self.sFit.serviceFittingOptions["ammoChangeAll"] = self.cbReloadAll.GetValue()
+
+    def onCBFilterBySkills(self, event):
+        self.sFit.serviceFittingOptions["filterBySkills"] = self.cbFilterBySkills.GetValue()
+        # TODO: maybe refresh browsers here
 
     def OnAddLabelsChange(self, event):
         self.sFit.serviceFittingOptions["additionsLabels"] = event.GetInt()
