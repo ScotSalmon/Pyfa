@@ -1,17 +1,19 @@
 import wx
 from logbook import Logger
 
-from eos.saveddata.module import Module
 import gui.builtinMarketBrowser.pfSearchBox as SBox
+from config import slotColourMap
+from eos.saveddata.module import Module
 from gui.builtinMarketBrowser.events import ItemSelected, RECENTLY_USED_MODULES
 from gui.contextMenu import ContextMenu
 from gui.display import Display
 from gui.utils.staticHelpers import DragDropHelper
-from service.attribute import Attribute
 from service.fit import Fit
+from service.market import Market
 from service.character import Character
 from service.settings import SettingsProvider
 from config import slotColourMap
+
 
 pyfalog = Logger(__name__)
 
@@ -200,8 +202,8 @@ class ItemView(Display):
     def scheduleSearch(self, event=None):
         self.searchTimer.Stop()  # Cancel any pending timers
         search = self.marketBrowser.search.GetLineText(0)
-        # Make sure we do not count wildcard as search symbol
-        realsearch = search.replace("*", "")
+        # Make sure we do not count wildcards as search symbol
+        realsearch = search.replace('*', '').replace('?', '')
         # Re-select market group if search query has zero length
         if len(realsearch) == 0:
             self.selectionMade('search')
@@ -223,10 +225,11 @@ class ItemView(Display):
             self.setToggles()
             self.filterItemStore()
 
-    def populateSearch(self, items):
+    def populateSearch(self, itemIDs):
         # If we're no longer searching, dump the results
         if self.marketBrowser.mode != 'search':
             return
+        items = Market.getItems(itemIDs)
         self.updateItemStore(items)
         self.setToggles()
         self.filterItemStore()

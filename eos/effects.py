@@ -989,7 +989,7 @@ class Effect290(BaseEffect):
     sharpshooterRangeSkillBonusPostPercentMaxRangeLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Frentix Booster (4 of 4)
+    Implants named like: Frentix Booster (9 of 9)
     Implants named like: Zainou 'Deadeye' Sharpshooter ST (6 of 6)
     Skill: Sharpshooter
     """
@@ -1008,7 +1008,7 @@ class Effect298(BaseEffect):
     surgicalStrikeFalloffBonusPostPercentFalloffLocationShipModulesRequiringGunnery
 
     Used by:
-    Implants named like: Sooth Sayer Booster (4 of 4)
+    Implants named like: Sooth Sayer Booster (9 of 9)
     Implants named like: Zainou 'Deadeye' Trajectory Analysis TA (6 of 6)
     Skill: Trajectory Analysis
     """
@@ -1742,7 +1742,7 @@ class Effect596(BaseEffect):
     ammoInfluenceRange
 
     Used by:
-    Items from category: Charge (590 of 954)
+    Items from category: Charge (590 of 955)
     """
 
     type = 'passive'
@@ -1757,7 +1757,7 @@ class Effect598(BaseEffect):
     ammoSpeedMultiplier
 
     Used by:
-    Charges from group: Festival Charges (28 of 28)
+    Charges from group: Festival Charges (29 of 29)
     Charges from group: Interdiction Probe (2 of 2)
     Charges from group: Structure Festival Charges (2 of 2)
     Special Edition Assetss from group: Festival Charges Expired (4 of 4)
@@ -2328,7 +2328,7 @@ class Effect804(BaseEffect):
     ammoInfluenceCapNeed
 
     Used by:
-    Items from category: Charge (496 of 954)
+    Items from category: Charge (496 of 955)
     """
 
     type = 'passive'
@@ -3694,7 +3694,7 @@ class Effect1185(BaseEffect):
     structureStealthEmitterArraySigDecrease
 
     Used by:
-    Implants named like: X Instinct Booster (4 of 4)
+    Implants named like: X Instinct Booster (9 of 9)
     Implants named like: grade Halo (15 of 18)
     """
 
@@ -5977,6 +5977,7 @@ class Effect2019(BaseEffect):
     repairDroneShieldBonusBonus
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Repair Drone Operation DR (3 of 3)
     Modules named like: Drone Repair Augmentor (8 of 8)
     Skill: Repair Drone Operation
     """
@@ -5986,7 +5987,7 @@ class Effect2019(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context else True
+        penalized = False if 'skill' in context or 'implant' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
                                      'shieldBonus', container.getModifiedItemAttr('damageHP') * level,
                                      stackingPenalties=penalized, **kwargs)
@@ -5997,6 +5998,7 @@ class Effect2020(BaseEffect):
     repairDroneArmorDamageAmountBonus
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Repair Drone Operation DR (3 of 3)
     Modules named like: Drone Repair Augmentor (8 of 8)
     Skill: Repair Drone Operation
     """
@@ -6006,7 +6008,7 @@ class Effect2020(BaseEffect):
     @staticmethod
     def handler(fit, container, context, projectionRange, **kwargs):
         level = container.level if 'skill' in context else 1
-        penalized = False if 'skill' in context else True
+        penalized = False if 'skill' in context or 'implant' in context else True
         fit.drones.filteredItemBoost(lambda drone: drone.item.group.name == 'Logistic Drone',
                                      'armorDamageAmount', container.getModifiedItemAttr('damageHP') * level,
                                      stackingPenalties=penalized, **kwargs)
@@ -6964,7 +6966,7 @@ class Effect2432(BaseEffect):
 
     Used by:
     Implants named like: Inherent Implants 'Squire' Capacitor Management EM (6 of 6)
-    Implants named like: Mindflood Booster (4 of 4)
+    Implants named like: Mindflood Booster (9 of 9)
     Modules named like: Semiconductor Memory Cell (8 of 8)
     Implant: Antipharmakon Aeolis
     Implant: Genolution Core Augmentation CA-1
@@ -7820,7 +7822,9 @@ class Effect2735(BaseEffect):
     boosterArmorHpPenalty
 
     Used by:
-    Implants named like: Booster (12 of 35)
+    Implants named like: Improved Booster (4 of 8)
+    Implants named like: Standard Booster (4 of 8)
+    Implants named like: Strong Booster (4 of 8)
     """
 
     attr = 'boosterArmorHPPenalty'
@@ -7837,9 +7841,15 @@ class Effect2736(BaseEffect):
     boosterArmorRepairAmountPenalty
 
     Used by:
-    Implants named like: Drop Booster (3 of 4)
-    Implants named like: Mindflood Booster (3 of 4)
-    Implants named like: Sooth Sayer Booster (3 of 4)
+    Implant: Improved Drop Booster
+    Implant: Improved Mindflood Booster
+    Implant: Improved Sooth Sayer Booster
+    Implant: Standard Drop Booster
+    Implant: Standard Mindflood Booster
+    Implant: Standard Sooth Sayer Booster
+    Implant: Strong Drop Booster
+    Implant: Strong Mindflood Booster
+    Implant: Strong Sooth Sayer Booster
     """
 
     attr = 'boosterArmorRepairAmountPenalty'
@@ -7857,7 +7867,9 @@ class Effect2737(BaseEffect):
     boosterShieldCapacityPenalty
 
     Used by:
-    Implants from group: Booster (12 of 67)
+    Implants named like: Improved Booster (4 of 8)
+    Implants named like: Standard Booster (4 of 8)
+    Implants named like: Strong Booster (4 of 8)
     """
 
     attr = 'boosterShieldCapacityPenalty'
@@ -7874,9 +7886,15 @@ class Effect2739(BaseEffect):
     boosterTurretOptimalRangePenalty
 
     Used by:
-    Implants named like: Blue Pill Booster (3 of 5)
-    Implants named like: Mindflood Booster (3 of 4)
-    Implants named like: Sooth Sayer Booster (3 of 4)
+    Implant: Improved Blue Pill Booster
+    Implant: Improved Mindflood Booster
+    Implant: Improved Sooth Sayer Booster
+    Implant: Standard Blue Pill Booster
+    Implant: Standard Mindflood Booster
+    Implant: Standard Sooth Sayer Booster
+    Implant: Strong Blue Pill Booster
+    Implant: Strong Mindflood Booster
+    Implant: Strong Sooth Sayer Booster
     """
 
     attr = 'boosterTurretOptimalRangePenalty'
@@ -7894,8 +7912,12 @@ class Effect2741(BaseEffect):
     boosterTurretFalloffPenalty
 
     Used by:
-    Implants named like: Drop Booster (3 of 4)
-    Implants named like: X Instinct Booster (3 of 4)
+    Implant: Improved Drop Booster
+    Implant: Improved X-Instinct Booster
+    Implant: Standard Drop Booster
+    Implant: Standard X-Instinct Booster
+    Implant: Strong Drop Booster
+    Implant: Strong X-Instinct Booster
     """
 
     attr = 'boosterTurretFalloffPenalty'
@@ -7913,8 +7935,12 @@ class Effect2745(BaseEffect):
     boosterCapacitorCapacityPenalty
 
     Used by:
-    Implants named like: Blue Pill Booster (3 of 5)
-    Implants named like: Exile Booster (3 of 4)
+    Implant: Improved Blue Pill Booster
+    Implant: Improved Exile Booster
+    Implant: Standard Blue Pill Booster
+    Implant: Standard Exile Booster
+    Implant: Strong Blue Pill Booster
+    Implant: Strong Exile Booster
     """
 
     attr = 'boosterCapacitorCapacityPenalty'
@@ -7931,8 +7957,10 @@ class Effect2746(BaseEffect):
     boosterMaxVelocityPenalty
 
     Used by:
-    Implants named like: Crash Booster (3 of 4)
     Items from market group: Implants & Boosters > Booster > Booster Slot 02 (9 of 13)
+    Implant: Improved Crash Booster
+    Implant: Standard Crash Booster
+    Implant: Strong Crash Booster
     """
 
     attr = 'boosterMaxVelocityPenalty'
@@ -7949,8 +7977,12 @@ class Effect2747(BaseEffect):
     boosterTurretTrackingPenalty
 
     Used by:
-    Implants named like: Exile Booster (3 of 4)
-    Implants named like: Frentix Booster (3 of 4)
+    Implant: Improved Exile Booster
+    Implant: Improved Frentix Booster
+    Implant: Standard Exile Booster
+    Implant: Standard Frentix Booster
+    Implant: Strong Exile Booster
+    Implant: Strong Frentix Booster
     """
 
     attr = 'boosterTurretTrackingPenalty'
@@ -7968,8 +8000,12 @@ class Effect2748(BaseEffect):
     boosterMissileVelocityPenalty
 
     Used by:
-    Implants named like: Crash Booster (3 of 4)
-    Implants named like: X Instinct Booster (3 of 4)
+    Implant: Improved Crash Booster
+    Implant: Improved X-Instinct Booster
+    Implant: Standard Crash Booster
+    Implant: Standard X-Instinct Booster
+    Implant: Strong Crash Booster
+    Implant: Strong X-Instinct Booster
     """
 
     attr = 'boosterMissileVelocityPenalty'
@@ -7987,7 +8023,9 @@ class Effect2749(BaseEffect):
     boosterMissileExplosionVelocityPenalty
 
     Used by:
-    Implants named like: Blue Pill Booster (3 of 5)
+    Implant: Improved Blue Pill Booster
+    Implant: Standard Blue Pill Booster
+    Implant: Strong Blue Pill Booster
     """
 
     attr = 'boosterAOEVelocityPenalty'
@@ -8142,8 +8180,12 @@ class Effect2791(BaseEffect):
     boosterMissileExplosionCloudPenaltyFixed
 
     Used by:
-    Implants named like: Exile Booster (3 of 4)
-    Implants named like: Mindflood Booster (3 of 4)
+    Implant: Improved Exile Booster
+    Implant: Improved Mindflood Booster
+    Implant: Standard Exile Booster
+    Implant: Standard Mindflood Booster
+    Implant: Strong Exile Booster
+    Implant: Strong Mindflood Booster
     """
 
     attr = 'boosterMissileAOECloudPenalty'
@@ -8435,7 +8477,7 @@ class Effect2847(BaseEffect):
     trackingSpeedBonusPassiveRequiringGunneryTrackingSpeedBonus
 
     Used by:
-    Implants named like: Drop Booster (4 of 4)
+    Implants named like: Drop Booster (9 of 9)
     Implants named like: Eifyr and Co. 'Gunslinger' Motion Prediction MR (6 of 6)
     Implant: Antipharmakon Iokira
     Implant: Ogdin's Eye Coordination Enhancer
@@ -9302,9 +9344,9 @@ class Effect3029(BaseEffect):
     overloadSelfEmHardeningBonus
 
     Used by:
+    Modules named like: Anti EM Shield Hardener (21 of 21)
+    Variations of module: Anti-EM Shield Hardener I (20 of 20)
     Variations of module: Armor EM Hardener I (39 of 39)
-    Variations of module: EM Ward Field I (19 of 19)
-    Module: Civilian EM Ward Field
     """
 
     type = 'overheat'
@@ -9319,9 +9361,9 @@ class Effect3030(BaseEffect):
     overloadSelfThermalHardeningBonus
 
     Used by:
+    Variations of module: Anti-Thermal Shield Hardener I (20 of 20)
     Variations of module: Armor Thermal Hardener I (39 of 39)
-    Variations of module: Thermal Dissipation Field I (19 of 19)
-    Module: Civilian Thermal Dissipation Field
+    Module: Civilian Anti-Thermal Shield Hardener
     """
 
     type = 'overheat'
@@ -9336,9 +9378,9 @@ class Effect3031(BaseEffect):
     overloadSelfExplosiveHardeningBonus
 
     Used by:
+    Variations of module: Anti-Explosive Shield Hardener I (20 of 20)
     Variations of module: Armor Explosive Hardener I (39 of 39)
-    Variations of module: Explosive Deflection Field I (19 of 19)
-    Module: Civilian Explosive Deflection Field
+    Module: Civilian Anti-Explosive Shield Hardener
     """
 
     type = 'overheat'
@@ -9353,9 +9395,9 @@ class Effect3032(BaseEffect):
     overloadSelfKineticHardeningBonus
 
     Used by:
+    Modules named like: Anti Kinetic Shield Hardener (21 of 21)
+    Variations of module: Anti-Kinetic Shield Hardener I (20 of 20)
     Variations of module: Armor Kinetic Hardener I (39 of 39)
-    Variations of module: Kinetic Deflection Field I (19 of 19)
-    Module: Civilian Kinetic Deflection Field
     """
 
     type = 'overheat'
@@ -9371,7 +9413,7 @@ class Effect3035(BaseEffect):
 
     Used by:
     Modules named like: Capital Flex Hardener (9 of 9)
-    Variations of module: Adaptive Invulnerability Field I (17 of 17)
+    Variations of module: Adaptive Invulnerability Shield Hardener I (18 of 18)
     """
 
     type = 'overheat'
@@ -16713,7 +16755,7 @@ class Effect4951(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
-    Implants named like: Blue Pill Booster (5 of 5)
+    Implants named like: Blue Pill Booster (10 of 10)
     Implant: Antipharmakon Thureo
     """
 
@@ -16767,9 +16809,15 @@ class Effect4970(BaseEffect):
     boosterShieldBoostAmountPenaltyShieldSkills
 
     Used by:
-    Implants named like: Crash Booster (3 of 4)
-    Implants named like: Frentix Booster (3 of 4)
-    Implants named like: Mindflood Booster (3 of 4)
+    Implant: Improved Crash Booster
+    Implant: Improved Frentix Booster
+    Implant: Improved Mindflood Booster
+    Implant: Standard Crash Booster
+    Implant: Standard Frentix Booster
+    Implant: Standard Mindflood Booster
+    Implant: Strong Crash Booster
+    Implant: Strong Frentix Booster
+    Implant: Strong Mindflood Booster
     """
 
     attr = 'boosterShieldBoostAmountPenalty'
@@ -16871,7 +16919,7 @@ class Effect4989(BaseEffect):
     missileSkillAoeCloudSizeBonusAllIncludingCapitals
 
     Used by:
-    Implants named like: Crash Booster (4 of 4)
+    Implants named like: Crash Booster (9 of 9)
     """
 
     type = 'passive'
@@ -18630,7 +18678,7 @@ class Effect5230(BaseEffect):
 
     Used by:
     Modules from group: Flex Shield Hardener (5 of 5)
-    Modules from group: Shield Hardener (97 of 97)
+    Modules from group: Shield Hardener (102 of 102)
     """
 
     type = 'active'
@@ -19796,7 +19844,7 @@ class Effect5364(BaseEffect):
 
     Used by:
     Implants named like: Agency 'Hardshell' TB Dose (4 of 4)
-    Implants named like: Exile Booster (4 of 4)
+    Implants named like: Exile Booster (9 of 9)
     Implant: Antipharmakon Kosybo
     """
 
@@ -22034,6 +22082,7 @@ class Effect5769(BaseEffect):
     repairDroneHullBonusBonus
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Repair Drone Operation DR (3 of 3)
     Modules named like: Drone Repair Augmentor (8 of 8)
     Skill: Repair Drone Operation
     """
@@ -30456,6 +30505,7 @@ class Effect6664(BaseEffect):
     skillBonusDroneSharpshooting
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Drone Sharpshooting DS (3 of 3)
     Skill: Drone Sharpshooting
     """
 
@@ -30464,16 +30514,18 @@ class Effect6664(BaseEffect):
     @staticmethod
     def handler(fit, src, context, projectionRange, **kwargs):
         lvl = src.level if 'skill' in context else 1
-        fit.drones.filteredItemBoost(lambda mod: mod.item.requiresSkill('Drones'), 'maxRange',
-                                     src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityMissilesRange',
-                                       src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
-                                       'fighterAbilityAttackTurretRangeOptimal',
-                                       src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
-        fit.fighters.filteredItemBoost(lambda mod: mod.item.requiresSkill('Fighters'),
-                                       'fighterAbilityAttackMissileRangeOptimal',
-                                       src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.drones.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Drones'), 'maxRange',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityMissilesRange',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityAttackTurretRangeOptimal',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
+        fit.fighters.filteredItemBoost(
+            lambda mod: mod.item.requiresSkill('Fighters'), 'fighterAbilityAttackMissileRangeOptimal',
+            src.getModifiedItemAttr('rangeSkillBonus') * lvl, **kwargs)
 
 
 class Effect6665(BaseEffect):
@@ -30481,6 +30533,7 @@ class Effect6665(BaseEffect):
     skillBonusDroneDurability
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Drone Durability DD (3 of 3)
     Skill: Drone Durability
     """
 
@@ -30504,6 +30557,7 @@ class Effect6667(BaseEffect):
     skillBonusDroneNavigation
 
     Used by:
+    Implants named like: Black Market 'Valdimar' Drone Navigation DN (3 of 3)
     Skill: Drone Navigation
     """
 
@@ -35659,7 +35713,7 @@ class Effect7177(BaseEffect):
     skillBonusDroneDurabilityNotFighters
 
     Used by:
-    Implants from group: Cyber Drones (4 of 4)
+    Implants named like: Drone Tuner (4 of 4)
     """
 
     type = 'passive'
@@ -36253,3 +36307,109 @@ class Effect8018(BaseEffect):
     def handler(fit, implant, context, projectionRange, **kwargs):
         fit.modules.filteredItemBoost(lambda mod: mod.item.requiresSkill('Shield Emission Systems') or mod.item.requiresSkill('Remote Armor Repair Systems'),
                                       'duration', implant.getModifiedItemAttr('remoteRepDurationBonus'), **kwargs)
+
+
+class Effect8021(BaseEffect):
+    """
+    hydraSetBonus
+
+    Used by:
+    Implants named like: grade Hydra (18 of 18)
+    """
+
+    runTime = 'early'
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        for attr in ('hydraDroneTrackingBonus', 'hydraDroneRangeBonus', 'hydraMissileFlightTimeBonus', 'hydraMissileExplosionVelocityBonus'):
+            fit.appliedImplants.filteredItemMultiply(
+                lambda implant: implant.item.requiresSkill('Cybernetics'),
+                attr, implant.getModifiedItemAttr('implantSetHydra'), **kwargs)
+
+
+class Effect8023(BaseEffect):
+    """
+    hydraDroneTrackingEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.drones.filteredItemBoost(
+            lambda drone: drone.item.requiresSkill('Drones'),
+            'trackingSpeed', implant.getModifiedItemAttr('hydraDroneTrackingBonus'), **kwargs)
+
+
+class Effect8024(BaseEffect):
+    """
+    hydraDroneRangeEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        for attr in ('maxRange', 'falloff'):
+            fit.drones.filteredItemBoost(
+                lambda drone: drone.item.requiresSkill('Drones'),
+                attr, implant.getModifiedItemAttr('hydraDroneRangeBonus'), **kwargs)
+
+
+class Effect8025(BaseEffect):
+    """
+    hydraMissileFlightTimeEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'explosionDelay', implant.getModifiedItemAttr('hydraMissileFlightTimeBonus'), **kwargs)
+
+
+class Effect8026(BaseEffect):
+    """
+    hydraMissileExplosionVelocityEffect
+
+    Used by:
+    Implants named like: grade Hydra (15 of 18)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, implant, context, projectionRange, **kwargs):
+        fit.modules.filteredChargeBoost(
+            lambda mod: mod.charge.requiresSkill('Missile Launcher Operation'),
+            'aoeVelocity', implant.getModifiedItemAttr('hydraMissileExplosionVelocityBonus'), **kwargs)
+
+
+class Effect8029(BaseEffect):
+    """
+    roleBonus7CapBoosterGroupRestriction
+
+    Used by:
+    Ships from group: Force Auxiliary (6 of 6)
+    """
+
+    type = 'passive'
+
+    @staticmethod
+    def handler(fit, ship, context, projectionRange, **kwargs):
+        for attr in ('maxGroupOnline', 'maxGroupFitted'):
+            fit.modules.filteredItemForce(
+                lambda mod: mod.item.group.name == 'Capacitor Booster',
+                attr, ship.getModifiedItemAttr('shipBonusRole7'), **kwargs)
