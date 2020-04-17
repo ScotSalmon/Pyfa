@@ -124,9 +124,9 @@ gitversion
 
 *.fsdbinary
 
-# VS Code
-.vscode/settings.json
-.vscode/launch.json
+# VS/VS Code
+.vscode
+.vs
 
-# 
+# generated file
 eve.db
